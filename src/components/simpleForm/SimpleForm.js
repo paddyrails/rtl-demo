@@ -21,6 +21,8 @@ const SimpleForm = ({userId}) => {
 
   const [userInfo, setUserInfo] = useState({ ...initialValues, address: { ...initialValues.address } })
 
+  const [error, setError] = useState(undefined)
+
   useEffect(()=> {
     getUser(userId)
     .then((res) => {
@@ -46,12 +48,15 @@ const SimpleForm = ({userId}) => {
       street: data.address.street,
       city: data.address.city,
       zipcode: data.address.zipcode
-    })
+    }).then((res)=>{})
+    .catch((err) => setError(err))
+
   }
 
   return (
     <React.Fragment>
     <h2>User Information</h2>
+    <p>{error ? error : null}</p>
     <Formik 
       initialValues={userInfo}
       enableReinitialize
@@ -61,25 +66,67 @@ const SimpleForm = ({userId}) => {
         return (<Form>
           <Grid container spacing={2}>
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="name" type="text" size="small" labeltext="Name" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="name" 
+                type="text" 
+                size="small" 
+                labeltext="Name" 
+              />
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="username" type="text" size="small" labeltext="User Name" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="username" 
+                type="text" 
+                size="small" 
+                labeltext="User Name" 
+              />
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="email" type="text" size="small" labeltext="Email" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="email" 
+                type="email" 
+                size="small" 
+                labeltext="Email" />
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.street" type="email" size="small" labeltext="Street" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="address.street" 
+                type="text" 
+                size="small" 
+                labeltext="Street" 
+              />
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.city" type="text" size="small" labeltext="City" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="address.city" 
+                type="text" 
+                size="small" 
+                labeltext="City" 
+              />
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.zipcode" type="text" size="small" labeltext="Zip code" ></FormikTextField>
+              <FormikTextField 
+                variant="outlined" 
+                name="address.zipcode" 
+                type="text" 
+                size="small" 
+                labeltext="Zip code" />
             </Grid>  
             <Grid item sm={12} md={12} lg={12}>
-            <Button type="submit" size="small" label="Save">Save</Button>
+            <Button 
+              type="submit" 
+              variant="contained" 
+              color="primary" 
+              size="small" 
+              label="Save"
+            >
+                Save
+            </Button>
             </Grid>
           </Grid>
         </Form>)

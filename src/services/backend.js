@@ -18,6 +18,6 @@ export function saveUser(userDetails){
   //   .then((res) => {
   //     return res
   //   });
-  return Promise.resolve('success')
+  return Promise.reject('Cannot save user details at this time!')
 }
 

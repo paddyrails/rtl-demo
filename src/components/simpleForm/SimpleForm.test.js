@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, fireEvent, render , screen, waitFor } from '@testing-library/react'
+import { act, findAllByText, fireEvent, render , screen, waitFor } from '@testing-library/react'
 
 import * as backendModules from '../../services/backend'
 
@@ -15,20 +15,17 @@ const mockedResponse = {
       "city": "Charlotte",
       "zipcode": "28217-0000",
   },
-
 }
-
 
 jest.mock('../../services/backend', () => {
   return {
     getUser: jest.fn(() => {
-      return new Promise(() => {})
+      return Promise.resolve()
     }),
     saveUser: jest.fn(() => {
-      return new Promise(() => {})
+      return Promise.resolve('success')
     })
   }
-
 })
 
 describe('Simple Form Component', () => {
@@ -68,6 +65,7 @@ describe('Simple Form Component', () => {
 
   test('able to change values on form and submit form', async () => {
     const spy = jest.spyOn(backendModules, 'saveUser')
+
     await act(async () => {
       const { container } = await render(<SimpleForm userid={3} />)
     })
@@ -85,8 +83,8 @@ describe('Simple Form Component', () => {
     await waitFor(() => expect(emailInput.value).toBe("janedoe@gmail.com"))
 
     const streetInput = screen.getByRole('textbox', {name: "Street"})
-    fireEvent.change(streetInput, {target: {value: 'cah cah'}})
-    await waitFor(() => expect(streetInput.value).toBe("cah cah"))
+    fireEvent.change(streetInput, {target: {value: 'park street'}})
+    await waitFor(() => expect(streetInput.value).toBe("park street"))
 
     const cityInput = screen.getByRole('textbox', {name: "City"})
     fireEvent.change(cityInput, {target: {value: 'Atlanta'}})
@@ -104,12 +102,31 @@ describe('Simple Form Component', () => {
       name: 'Jane Doe',
       username: 'janedoe',
       email: 'janedoe@gmail.com',
-      street: 'cah cah',
+      street: 'park street',
       city: 'Atlanta',
       zipcode: '98650-0000'
     }))
     
   })
 
+  test('it should show error msg from backed', async () => {
+
+    backendModules.saveUser.mockImplementation(() => {
+      return Promise.reject('Cannot save user details at this time!')
+    })
+
+    await act(async () => {
+      const { container } = await render(<SimpleForm userid={3} />)
+    })
+
+    const nameInput = screen.getByRole('textbox', {name: "Name"})
+    fireEvent.change(nameInput, {target: {value: 'Jane Doe'}})
+
+    const saveButton = screen.getByRole('button', {name: 'Save'})
+    fireEvent.click(saveButton)
+
+    expect((await screen.findAllByText('Cannot save user details at this time!')).length).toBe(1)
+    screen.debug()
+  })
 
 })
