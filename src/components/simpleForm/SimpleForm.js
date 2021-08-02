@@ -1,8 +1,9 @@
 
 import React, { useEffect, useState } from 'react'
-import { Form, Formik, useField } from 'formik'
+import { Form, Formik } from 'formik'
 import { Grid, Button } from '@material-ui/core'
 import FormikTextField from '../common/FormikTextField'
+import {getUser} from '../../services/backend'
 
 const initialValues = {
   name: '',
@@ -24,9 +25,9 @@ const SimpleForm = ({userId}) => {
   })
 
   useEffect(()=> {
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-    .then((res) => res.json())
+    getUser(userId)
     .then((res) => {
+      console.log(res)
       const newUserInfo = {...initialValues, address: { ...initialValues.address }};
       newUserInfo.name = res.name;
       newUserInfo.username = res.username;
@@ -36,7 +37,7 @@ const SimpleForm = ({userId}) => {
       newUserInfo.address.zipcode = res.address.zipcode;
 
       setUserInfo(newUserInfo)
-    });
+    }).catch((err) => { console.log(err)})
   },[userId])
 
   const submitHanlder = () => {
