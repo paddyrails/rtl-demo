@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Form, Formik } from 'formik'
 import { Grid, Button } from '@material-ui/core'
 import FormikTextField from '../common/FormikTextField'
-import {getUser} from '../../services/backend'
+import {getUser, saveUser} from '../../services/backend'
 
 const initialValues = {
+  id: '',
   name: '',
   username: '',
   email: '',
@@ -20,15 +21,11 @@ const SimpleForm = ({userId}) => {
 
   const [userInfo, setUserInfo] = useState({ ...initialValues, address: { ...initialValues.address } })
 
-  useEffect(()=>{
-    console.log(userInfo)
-  })
-
   useEffect(()=> {
     getUser(userId)
     .then((res) => {
-      console.log(res)
       const newUserInfo = {...initialValues, address: { ...initialValues.address }};
+      newUserInfo.id = res.id;
       newUserInfo.name = res.name;
       newUserInfo.username = res.username;
       newUserInfo.email = res.email;
@@ -40,8 +37,16 @@ const SimpleForm = ({userId}) => {
     }).catch((err) => { console.log(err)})
   },[userId])
 
-  const submitHanlder = () => {
-    console.log("submit called")
+  const submitHanlder = (data) => {
+    saveUser({
+      id: userInfo.id,
+      name: data.name,
+      username: data.username,
+      email: data.email,
+      street: data.address.street,
+      city: data.address.city,
+      zipcode: data.address.zipcode
+    })
   }
 
   return (
@@ -56,25 +61,25 @@ const SimpleForm = ({userId}) => {
         return (<Form>
           <Grid container spacing={2}>
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="name" type="text" size="small" label="Name" ></FormikTextField>
+              <FormikTextField variant="outlined" name="name" type="text" size="small" labeltext="Name" ></FormikTextField>
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="username" type="text" size="small" label="User Name" ></FormikTextField>
+              <FormikTextField variant="outlined" name="username" type="text" size="small" labeltext="User Name" ></FormikTextField>
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="email" type="text" size="small" label="Email" ></FormikTextField>
+              <FormikTextField variant="outlined" name="email" type="text" size="small" labeltext="Email" ></FormikTextField>
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.street" type="email" size="small" label="Street" ></FormikTextField>
+              <FormikTextField variant="outlined" name="address.street" type="email" size="small" labeltext="Street" ></FormikTextField>
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.city" type="text" size="small" label="City" ></FormikTextField>
+              <FormikTextField variant="outlined" name="address.city" type="text" size="small" labeltext="City" ></FormikTextField>
             </Grid> 
             <Grid item sm={12} md={12} lg={12}>
-              <FormikTextField variant="outlined" name="address.zipcode" type="text" size="small" label="Zip code" ></FormikTextField>
+              <FormikTextField variant="outlined" name="address.zipcode" type="text" size="small" labeltext="Zip code" ></FormikTextField>
             </Grid>  
             <Grid item sm={12} md={12} lg={12}>
-            <Button type="submit" size="smallpwd" label="Save">Save</Button>
+            <Button type="submit" size="small" label="Save">Save</Button>
             </Grid>
           </Grid>
         </Form>)
