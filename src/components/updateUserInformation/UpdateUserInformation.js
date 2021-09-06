@@ -55,7 +55,7 @@ const UpdateUserInformation = ({userId}) => {
   return (
     <React.Fragment>
     
-    <h2>User Information</h2>
+    <h2>Update User Information</h2>
 
     <p>{error ? error : null}</p>
 
