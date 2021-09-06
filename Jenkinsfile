@@ -7,7 +7,7 @@ pipeline {
                 sh 'rm -rf rtl-demo'
 //                 sh 'git clone https://github.com/paddyrails/rtl-demo'
 //                 sh 'cd rtl-demo'
-                sh 'ls'
+                sh 'ls -la src'
                 sh 'npm i'
                 sh 'npm run test'
                 sh 'npm run build'
