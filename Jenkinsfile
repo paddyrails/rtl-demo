@@ -4,6 +4,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'npm --version'
+                sh 'rm -rf rtl-demo'
                 sh 'git clone https://github.com/paddyrails/rtl-demo'
                 sh 'cd rtl-demo'
                 sh 'ls'
