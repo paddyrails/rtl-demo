@@ -1,9 +1,12 @@
 import React from 'react'
 import { act, findAllByText, fireEvent, render , screen, waitFor } from '@testing-library/react'
+const { axe, toHaveNoViolations } = require('jest-axe')
 
 import * as backendModules from '../../services/backend'
 
-import SimpleForm from './SimpleForm'
+import UpdateUserInformation from './UpdateUserInformation'
+
+expect.extend(toHaveNoViolations)
 
 const mockedResponse = {
   "id": 3,
@@ -28,8 +31,8 @@ jest.mock('../../services/backend', () => {
   }
 })
 
-describe('Simple Form Component', () => {
-  beforeEach(() => {
+describe('UpdateUserInformation Component',  () => {
+  beforeEach( () => {
     backendModules.getUser.mockImplementation(() => {
       return Promise.resolve(mockedResponse)
     })
@@ -40,7 +43,7 @@ describe('Simple Form Component', () => {
 
   test('renders form with fetched data for given userId', async () => {
     await act(async () => {
-      const { container } = await render(<SimpleForm userid={3} />)
+      const { container } = await render(<UpdateUserInformation userid={3} />)
     })
 
     const firstnameInput = screen.getByRole('textbox', {name: "Name"})
@@ -67,7 +70,7 @@ describe('Simple Form Component', () => {
     const spy = jest.spyOn(backendModules, 'saveUser')
 
     await act(async () => {
-      const { container } = await render(<SimpleForm userid={3} />)
+      const { container } = await render(<UpdateUserInformation userid={3} />)
     })
 
     const nameInput = screen.getByRole('textbox', {name: "Name"})
@@ -116,7 +119,7 @@ describe('Simple Form Component', () => {
     })
 
     await act(async () => {
-      const { container } = await render(<SimpleForm userid={3} />)
+      const { container } = await render(<UpdateUserInformation userid={3} />)
     })
 
     const nameInput = screen.getByRole('textbox', {name: "Name"})
@@ -126,7 +129,24 @@ describe('Simple Form Component', () => {
     fireEvent.click(saveButton)
 
     expect((await screen.findAllByText('Cannot save user details at this time!')).length).toBe(1)
-    screen.debug()
+    
   })
 
+  
+
 })
+
+// it('checks for accessibility violations', async () => {
+//   backendModules.getUser.mockImplementation(() => {
+//     return Promise.resolve(mockedResponse)
+//   })
+//   backendModules.saveUser.mockImplementation(() => {
+//     return Promise.resolve('success')
+//   })
+
+//   await act(async () => {
+//     const { container } = render(<UpdateUserInformation userid={3} />)
+//     const results = await axe(container)
+//     expect(results).toHaveNoViolations()
+//   })
+// })
