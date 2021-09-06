@@ -10,7 +10,7 @@ pipeline {
 //                 sh 'cd rtl-demo'
                 sh 'ls -la src/components'
                 sh 'npm i'
-                sh 'npm run test'
+//                 sh 'npm run test'
                 sh 'npm run build'
             }
         }
