@@ -1,9 +1,17 @@
 pipeline {
-    agent { docker { image 'node:14-alpine' } }
     stages {
         stage('build') {
             steps {
                 sh 'npm --version'
+                sh 'git clone https://github.com/paddyrails/rtl-demo'
+                sh 'npm i'
+                sh 'npm run test'
+                sh 'npm run build'
+            }
+        }
+        stage('deploy') {
+            steps {
+                sh 'cp -R build/* /tmp/deployment-folder'
             }
         }
     }
