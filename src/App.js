@@ -1,12 +1,11 @@
 
 import './App.css';
-import SimpleForm from './components/simpleForm/SimpleForm';
-
+import UpdateUserInformation from './components/updateUserInformation/UpdateUserInformation';
 
 function App() {
   return (
     <div className="App">
-      <SimpleForm userId={3} />
+      <UpdateUserInformation userId={3} />
     </div>
   );
 }

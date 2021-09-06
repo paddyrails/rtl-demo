@@ -6,7 +6,7 @@ const FormikTextField = ({placeholder, ...props}) => {
   const [field, meta] = useField(props)
   return (
     <FormControl size='small' variant="outlined">
-      <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
+      {/* <InputLabel htmlFor={props.name}>{props.labeltext}</InputLabel> */}
       <TextField
         {...field}
         id={props.name}

@@ -17,10 +17,9 @@ const initialValues = {
   }
 }
 
-const SimpleForm = ({userId}) => {
+const UpdateUserInformation = ({userId}) => {
 
   const [userInfo, setUserInfo] = useState({ ...initialValues, address: { ...initialValues.address } })
-
   const [error, setError] = useState(undefined)
 
   useEffect(()=> {
@@ -55,8 +54,16 @@ const SimpleForm = ({userId}) => {
 
   return (
     <React.Fragment>
+    
     <h2>User Information</h2>
+
     <p>{error ? error : null}</p>
+
+
+    <input type="text" name="userType" id="userType" />
+
+
+
     <Formik 
       initialValues={userInfo}
       enableReinitialize
@@ -136,4 +143,4 @@ const SimpleForm = ({userId}) => {
   )
 }
 
-export default SimpleForm;
+export default UpdateUserInformation;
