@@ -136,7 +136,7 @@ const UpdateUserInformation = ({ userId }) => {
                     size="small"
                     label="Save"
                   >
-                    Save
+                    Save Information
                   </Button>
                 </Grid>
               </Grid>
