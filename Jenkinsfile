@@ -6,11 +6,12 @@ pipeline {
                 sh 'npm --version'
                 sh 'rm -rf rtl-demo'
                 sh 'rm -rf node_modules'
-//                 sh 'git clone https://github.com/paddyrails/rtl-demo'
-//                 sh 'cd rtl-demo'
                 sh 'ls -la src/components'
+                // Install NPM Packages
                 sh 'npm i'
-//                 sh 'npm run test'
+                // Run unit tests
+                sh 'npm run test'
+                // Run production build
                 sh 'npm run build'
             }
         }
